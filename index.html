@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>محول التواريخ</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f4ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      direction: rtl;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+    }
+
+    h1 {
+      color: #5e2ca5;
+      margin-bottom: 25px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #5e2ca5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4a1f85;
+    }
+
+    p.result {
+      margin-top: 12px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>محول التواريخ</h1>
+
+    <div class="section">
+      <h3>من هجري إلى ميلادي</h3>
+      <input type="text" id="hijriDate" placeholder="مثال: 1446-09-01">
+      <button onclick="convertToGregorian()">تحويل</button>
+      <p id="resultG" class="result"></p>
+    </div>
+
+    <div class="section">
+      <h3>من ميلادي إلى هجري</h3>
+      <input type="text" id="gregDate" placeholder="مثال: 2025-04-05">
+      <button onclick="convertToHijri()">تحويل</button>
+      <p id="resultH" class="result"></p>
+    </div>
+  </div>
+
+  <script>
+    async function convertToGregorian() {
+      const hijriDate = document.getElementById("hijriDate").value;
+      const url = https://api.aladhan.com/v1/hToG?date=${hijriDate};
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 200) {
+          document.getElementById("resultG").innerText = "الميلادي: " + data.data.gregorian.date;
+        } else {
+          document.getElementById("resultG").innerText = "تأكد من صحة التاريخ.";
+        }
+      } catch {
+        document.getElementById("resultG").innerText = "حدث خطأ أثناء الاتصال.";
+      }
+    }
+
+    async function convertToHijri() {
+      const gregDate = document.getElementById("gregDate").value;
+      const url = https://api.aladhan.com/v1/gToH?date=${gregDate};
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 200) {
+          document.getElementById("resultH").innerText = "الهجري: " + data.data.hijri.date;
+        } else {
+          document.getElementById("resultH").innerText = "تأكد من صحة التاريخ.";
+        }
+      } catch {
+        document.getElementById("resultH").innerText = "حدث خطأ أثناء الاتصال.";
+      }
+    }
+  </script>
+</body>
+</html>
