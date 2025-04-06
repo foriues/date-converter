@@ -96,28 +96,27 @@
     </div>
   </div>
 
-  <script>
-    function convertToGregorian() {
-  const hijriDate = document.getElementById("hijriDate").value;
-  const [year, month, day] = hijriDate.split('-').map(num => parseInt(num, 10));
-  const gregorianDate = moment(`${year}-${month}-${day}`, 'iYYYY-iM-iD').format('YYYY-MM-DD');
-  if (gregorianDate === 'Invalid date') {
-    document.getElementById("resultG").innerText = "تأكد من صحة التاريخ.";
-  } else {
-    document.getElementById("resultG").innerText = "الميلادي: " + gregorianDate;
+ <script>
+  function convertToGregorian() {
+    const hijriDate = document.getElementById("hijriDate").value;
+    const [year, month, day] = hijriDate.split('-').map(num => parseInt(num, 10));
+    const gregorianDate = moment(`${year}-${month}-${day}`, 'iYYYY-iM-iD').format('YYYY-MM-DD');
+    if (gregorianDate === 'Invalid date') {
+      document.getElementById("resultG").innerText = "تأكد من صحة التاريخ.";
+    } else {
+      document.getElementById("resultG").innerText = "الميلادي: " + gregorianDate;
+    }
   }
-}
 
-function convertToHijri() {
-  const gregDate = document.getElementById("gregDate").value;
-  const hijriDate = moment(gregDate, 'YYYY-MM-DD').format('iYYYY-iM-iD');
-  if (hijriDate === 'Invalid date') {
-    document.getElementById("resultH").innerText = "تأكد من صحة التاريخ.";
-  } else {
-    document.getElementById("resultH").innerText = "الهجري: " + hijriDate;
+  function convertToHijri() {
+    const gregDate = document.getElementById("gregDate").value;
+    const hijriDate = moment(gregDate, 'YYYY-MM-DD').format('iYYYY-iMM-iDD');
+    if (hijriDate === 'Invalid date') {
+      document.getElementById("resultH").innerText = "تأكد من صحة التاريخ.";
+    } else {
+      document.getElementById("resultH").innerText = "الهجري: " + hijriDate;
+    }
   }
-}
-
-  </script>
+</script>
 </body>
 </html>
