@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>محول التواريخ</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -89,27 +87,37 @@
   </div>
 
   <script>
-    function convertToGregorian() {
-  const hijriDate = document.getElementById("hijriDate").value;
-  const [year, month, day] = hijriDate.split('-').map(num => parseInt(num, 10));
-  const gregorianDate = moment(`${year}-${month}-${day}`, 'iYYYY-iM-iD').format('YYYY-MM-DD');
-  if (gregorianDate === 'Invalid date') {
-    document.getElementById("resultG").innerText = "تأكد من صحة التاريخ.";
-  } else {
-    document.getElementById("resultG").innerText = "الميلادي: " + gregorianDate;
-  }
-}
+    async function convertToGregorian() {
+      const hijriDate = document.getElementById("hijriDate").value;
+      const url = https://api.aladhan.com/v1/hToG?date=${hijriDate};
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 200) {
+          document.getElementById("resultG").innerText = "الميلادي: " + data.data.gregorian.date;
+        } else {
+          document.getElementById("resultG").innerText = "تأكد من صحة التاريخ.";
+        }
+      } catch {
+        document.getElementById("resultG").innerText = "حدث خطأ أثناء الاتصال.";
+      }
+    }
 
-function convertToHijri() {
-  const gregDate = document.getElementById("gregDate").value;
-  const hijriDate = moment(gregDate, 'YYYY-MM-DD').format('iYYYY-iM-iD');
-  if (hijriDate === 'Invalid date') {
-    document.getElementById("resultH").innerText = "تأكد من صحة التاريخ.";
-  } else {
-    document.getElementById("resultH").innerText = "الهجري: " + hijriDate;
-  }
-}
-
+    async function convertToHijri() {
+      const gregDate = document.getElementById("gregDate").value;
+      const url = https://api.aladhan.com/v1/gToH?date=${gregDate};
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 200) {
+          document.getElementById("resultH").innerText = "الهجري: " + data.data.hijri.date;
+        } else {
+          document.getElementById("resultH").innerText = "تأكد من صحة التاريخ.";
+        }
+      } catch {
+        document.getElementById("resultH").innerText = "حدث خطأ أثناء الاتصال.";
+      }
+    }
   </script>
 </body>
 </html>
