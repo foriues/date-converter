@@ -8,7 +8,11 @@
   <meta name="keywords" content="تحويل التاريخ, هجري إلى ميلادي, ميلادي إلى هجري, تقويم أم القرى, date converter">
   <meta name="author" content="foriues">
   <title>محول التواريخ</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tabby_ai/hijri-converter/dist/hijri-converter.min.js"></script>
+
+  <!-- مكتبات moment -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.2/moment-hijri.min.js"></script>
+
   <style>
     body {
       background-color: #f6f0ff;
@@ -61,15 +65,25 @@
     function convertHijriToGregorian() {
       const value = document.getElementById('hijriInput').value;
       const [day, month, year] = value.split('-').map(Number);
-      const result = window.hijriConverter.hijriToGregorian({ year, month, day });
-      document.getElementById('gregorianResult').innerText = `الميلادي: ${result.day}-${result.month}-${result.year}`;
+      const hijriDate = moment(`${year}-${month}-${day}`, 'iYYYY-iM-iD');
+      if (!hijriDate.isValid()) {
+        document.getElementById('gregorianResult').innerText = "تأكد من صحة التاريخ.";
+        return;
+      }
+      const gregorian = hijriDate.format('DD-MM-YYYY');
+      document.getElementById('gregorianResult').innerText = `الميلادي: ${gregorian}`;
     }
 
     function convertGregorianToHijri() {
       const value = document.getElementById('gregorianInput').value;
       const [day, month, year] = value.split('-').map(Number);
-      const result = window.hijriConverter.gregorianToHijri({ year, month, day });
-      document.getElementById('hijriResult').innerText = `الهجري: ${result.day}-${result.month}-${result.year}`;
+      const gregorianDate = moment(`${year}-${month}-${day}`, 'YYYY-M-D');
+      if (!gregorianDate.isValid()) {
+        document.getElementById('hijriResult').innerText = "تأكد من صحة التاريخ.";
+        return;
+      }
+      const hijri = gregorianDate.format('iDD-iMM-iYYYY');
+      document.getElementById('hijriResult').innerText = `الهجري: ${hijri}`;
     }
   </script>
 </body>
