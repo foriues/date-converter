@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://date-converter.onrender.com/sitemap.xml
